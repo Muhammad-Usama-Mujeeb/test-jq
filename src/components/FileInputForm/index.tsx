@@ -1,5 +1,6 @@
 import { TextField, Button, Box, Input } from "@mui/material"
 import { useForm } from "react-hook-form";
+import { BASE_URL,ENDPOINT_POST_JOB } from "../../constants"
 
 const FileInputForm = () => {
 
@@ -14,10 +15,10 @@ const FileInputForm = () => {
         // Create a FormData object and append the file input value
         const formDataToSend = new FormData();
         formDataToSend.append("description", formData.description);
-        formDataToSend.append("file", formData.file[0]); // Assuming "file" is the name of your file input
+        formDataToSend.append("file", formData.file[0]); 
       
         try {
-          const response = await fetch('http://localhost:5000', {
+          const response = await fetch(`${BASE_URL}${ENDPOINT_POST_JOB}`, {
             method: 'POST',
             body: formDataToSend,
           });
@@ -36,7 +37,7 @@ const FileInputForm = () => {
 
     return (
         <form onSubmit={handleSubmit(submitInput)} encType="multipart/form-data">
-            <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem", py: '1rem' }}>
+            <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem", py: '5rem' }}>
                 <TextField
                     label="Job Description"
                     {...register("description", {
@@ -54,7 +55,7 @@ const FileInputForm = () => {
                 />
                 <Input  {...register("file")}
                     type='file' required></Input>
-                <Button variant="contained" type="submit" sx={{ color: 'black', backgroundColor: '#e5e7eb', "&:hover": { backgroundColor: "ddd" } }}>Submit</Button>
+                <Button variant="contained" type="submit" sx={{ color: 'black', backgroundColor: '#e5e7eb', "&:hover": { backgroundColor: "#ddd" } }}>Submit</Button>
             </Box>
         </form>
     );
