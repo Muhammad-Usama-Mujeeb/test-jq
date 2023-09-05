@@ -11,7 +11,7 @@ interface NotificationBarProps {
 function NotificationBar(props: NotificationBarProps) {
 
     return (
-        <Snackbar open={props.open} autoHideDuration={2000} onClose={props.onClose}
+        <Snackbar open={props.open} autoHideDuration={6000} onClose={props.onClose}
             anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',

@@ -1,16 +1,17 @@
-import { TextField, Button, Box, Input } from "@mui/material"
+import { TextField, Button, Box, Typography } from "@mui/material"
 import { useForm } from "react-hook-form";
 import { BASE_URL, ENDPOINT_POST_JOB } from "../../constants"
-import { useState } from "react";
 import NotificationBar from "../NotificationBar"
+import FileDropzone from "../FileDropzone";
+import { useState } from "react";
 
 const FileInputForm = () => {
-
   const [notificationData, setNotificationData] = useState({
     open: false,
     severity: 'success' as 'success' | 'error', // Specify the type explicitly
     message: '',
   });
+  const [file, setFile] = useState<File>();
 
   const {
     register,
@@ -23,30 +24,34 @@ const FileInputForm = () => {
     // Create a FormData object and append the file input value
     const formDataToSend = new FormData();
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("file", formData.file[0]);
-
-    try {
-      const response = await fetch(`${BASE_URL}${ENDPOINT_POST_JOB}`, {
-        method: 'POST',
-        body: formDataToSend,
-      });
-
-      if (response.ok) {
-        setNotificationData({
-          open: true,
-          severity: 'success', // Green
-          message: 'File uploaded successfully!',
+    if (file) {
+      formDataToSend.append("file", file);
+      try {
+        const response = await fetch(`${BASE_URL}${ENDPOINT_POST_JOB}`, {
+          method: 'POST',
+          body: formDataToSend,
         });
-        reset();
-      } else {
-        setNotificationData({
-          open: true,
-          severity: 'error', // Red
-          message: 'File upload failed!',
-        });
+
+        if (response.ok) {
+          setNotificationData({
+            open: true,
+            severity: 'success', // Green
+            message: 'File uploaded successfully!',
+          });
+          reset();
+          setFile(undefined);
+        } else {
+          setNotificationData({
+            open: true,
+            severity: 'error', // Red
+            message: 'File upload failed!',
+          });
+          reset();
+          setFile(undefined);
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
       }
-    } catch (error) {
-      console.error('Error uploading file:', error);
     }
   };
 
@@ -67,9 +72,9 @@ const FileInputForm = () => {
         onClose={onNotificationBarClose}
       />
       <form onSubmit={handleSubmit(submitInput)} encType="multipart/form-data">
-        <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem", py: '10rem' }}>
+        <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem", py: '6rem' }}>
           <TextField
-            label="Job Description"
+            placeholder="Copy + Paste Job Description"
             {...register("description", {
               required: "Description is required",
             })}
@@ -83,9 +88,12 @@ const FileInputForm = () => {
             error={!!errors.description}
             helperText={errors.description?.message?.toString()}
           />
-          <Input  {...register("file")}
-            type='file' required></Input>
-          <Button variant="contained" type="submit" sx={{ color: 'black', backgroundColor: '#e5e7eb', "&:hover": { backgroundColor: "#ddd" } }}>Submit</Button>
+          <FileDropzone onFileChange={(file: File) => setFile(file)} />
+          {file &&
+            <Typography variant="body1" sx={{ py: '0.5rem', color: "green" }}>
+              File Uploaded: {file?.name}
+            </Typography>}
+          <Button variant="contained" type="submit" sx={{ color: 'black', backgroundColor: '#e5e7eb', "&:hover": { backgroundColor: "#ddd" } }}>Get Free Score</Button>
         </Box>
       </form>
     </Box>
