@@ -72,7 +72,7 @@ const FileInputForm = () => {
         onClose={onNotificationBarClose}
       />
       <form onSubmit={handleSubmit(submitInput)} encType="multipart/form-data">
-        <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem", py: '6rem' }}>
+        <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', gap: "1rem"}}>
           <TextField
             placeholder="Copy + Paste Job Description"
             {...register("description", {
@@ -84,7 +84,7 @@ const FileInputForm = () => {
             }
             variant="outlined"
             multiline
-            rows={8}
+            rows={10}
             error={!!errors.description}
             helperText={errors.description?.message?.toString()}
           />
