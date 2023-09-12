@@ -6,7 +6,7 @@ function HomePage() {
     return (
         <Box>
             <Navbar />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3rem', m: '5rem' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem', m: '5rem', textAlign: 'center' }}>
                 <Box>
                     <Typography variant="h4" component="div" sx={{
                         fontWeight: 'bold',
@@ -20,7 +20,7 @@ function HomePage() {
                     </Typography>
                 </Box>
                 <FileInputForm />
-                <Link href="/guide" color="inherit" sx={{textDecoration: 'none', '&:hover':{fontWeight:'bold', color:'blue'}}}>
+                <Link href="/guide" color="inherit" sx={{ textDecoration: 'none', '&:hover': { fontWeight: 'bold', color: 'blue' } }}>
                     How it Works 👇
                 </Link>
             </Box>
